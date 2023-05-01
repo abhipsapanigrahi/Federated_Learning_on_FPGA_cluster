@@ -1,0 +1,4 @@
+# Federated_Learning_on_FPGA_cluster
+Federated Learning on a cluster of PynqZ2 FPGA boards
+
+Traditionally, Machine Learning model training is carried out in a centralized manner, where the edge devices (nodes) need to send all their data to a central server. This server is computationally very efficient. The entire model is trained here using all of the data, and then the trained model is sent back to the nodes for local inference. This centralized training method raises a major concern about data privacy since all data leaves the nodes and has to go to the server. Moreover, the latency associated with the movement of such huge volumes of training data is very large, and so is the energy cost associated with it. Federated Learning addresses these issues through a distributed and secure training method.
