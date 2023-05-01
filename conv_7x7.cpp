@@ -1,9 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Author:      Virat Agarwal
 // Course:      ECE8893 - Parallel Programming for FPGAs
 // Filename:    conv_7x7.cpp
-// Description: Implement a functionally-correct synthesizable 7x7 convolution 
-//              for a single tile block without any optimizations
+// Description: Implements a synthesizable 7x7 convolution (+ReLU) and max-pooling for
+// a single tile block. Also implements quarter drop, fully-connected layer, softmax
+// activation, backward propagation (gradient descent) to update the linear layer 
+// parameters and a function to calculate MSE of the predicted probabilities and actual 
+// one-hot encoded labels.
 ///////////////////////////////////////////////////////////////////////////////
 #include "utils.h"
 #include "hls_math.h"
@@ -12,35 +14,15 @@
 
 using namespace std;
 
-/*void conv_7x7(
-    fm_t Y_buf[OUT_BUF_DEPTH][OUT_BUF_HEIGHT][OUT_BUF_WIDTH], 
-    fm_t X_buf[IN_BUF_DEPTH][IN_BUF_HEIGHT][IN_BUF_WIDTH],
-    wt_t W_buf[OUT_BUF_DEPTH][IN_BUF_DEPTH][KERNEL_HEIGHT][KERNEL_WIDTH],
-    wt_t B_buf[OUT_BUF_DEPTH]
-)*/
 void conv_5x5(
     fm_t Y_buf[OUT_BUF_DEPTH][OUT_BUF_HEIGHT][OUT_BUF_WIDTH],
     fm_t X_buf[IN_BUF_DEPTH][IN_BUF_HEIGHT][IN_BUF_WIDTH],
     wt_t W_buf[OUT_BUF_DEPTH][IN_BUF_DEPTH][KERNEL_HEIGHT][KERNEL_WIDTH]
 )
 {
-    //---------------------------------------------------------------------------
-    // Part B: Implement a trivial functionally-correct single-tile convolution.
-    //
-    //         This should have an overall latency in the order of 22-23 seconds.
-    //
-    //         If it's worse than trivial, it may be worth fixing this first.
-    //         Otherwise, achieving the target latency with a worse-than-trivial
-    //         baseline may be difficult!
-    //
-    // TODO: Your code for Part B goes here. 
-    //---------------------------------------------------------------------------
-
-    // Loading the iimage locally
+    // Loading the image locally
     for (int feature = 0; feature < OUT_BUF_DEPTH; feature++) {
-        //for (int i = 0; i < TILE_HEIGHT; i += 2) {
         for (int i = 0; i < TILE_HEIGHT; i++) {
-            //for (int j = 0; j < TILE_WIDTH; j += 2) {
             for (int j = 0; j < TILE_WIDTH; j++) {
                 fm_t tmp = 0;
                 for (int k = 0; k < IN_BUF_DEPTH; k++) {
@@ -52,13 +34,9 @@ void conv_5x5(
                         }
                     }
                 }
-                //int tmp_row = i / 2;
-                //int tmp_column = j / 2;
-                //Y_buf[feature][tmp_row][tmp_column] = B_buf[feature] + tmp;
-
+                
                 // ReLU in-place
                 Y_buf[feature][i][j] = (tmp > 0) ? (tmp) : (fm_t) 0;
-//		cout<< Y_buf[feature][i][j]<<std::endl;
             }
         }
     }
@@ -83,7 +61,6 @@ void max_pool(
                     }
                 }
                 max_pool_out_buf[depth][i][j] = max;
-		//cout<<max_pool_out_buf[depth][i][j]<<endl;
             }
         }
     }

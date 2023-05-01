@@ -1,12 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Author:      <>
 // Course:      ECE8893 - Parallel Programming for FPGAs
 // Filename:    tiled_conv.cpp
-// Description: Implement a functionally-correct synthesizable tiling-based 
-//              convolution for ResNet-50's first 7x7 layer with an 
-//              HD input image.
-//              
-// Note: Do not use pragmas other than the existing ones in Part B.
+// Description: Implements a synthesizable tiling-based 
+//              convolution, max-pooling followed by fully-connected
+//              layer, softmax, backpropagation and MSE calculation.
 ///////////////////////////////////////////////////////////////////////////////
 #include "utils.h"
 #include <iostream>
@@ -39,7 +36,6 @@ void tiled_conv(
     fm_t conv_in_buf[IN_BUF_DEPTH][IN_BUF_HEIGHT][IN_BUF_WIDTH];
     wt_t conv_wt_buf[OUT_BUF_DEPTH][IN_BUF_DEPTH][KERNEL_HEIGHT][KERNEL_WIDTH];
     fm_t conv_out_buf[OUT_BUF_DEPTH][OUT_BUF_HEIGHT][OUT_BUF_WIDTH] = { 0 };
-    //fm_t conv_output[OUT_CONV_FM_DEPTH][OUT_CONV_FM_HEIGHT][OUT_CONV_FM_WIDTH];
     fm_t max_pool_out_buf[OUT_MAX_POOL_BUF_DEPTH][OUT_MAX_POOL_BUF_HEIGHT][OUT_MAX_POOL_BUF_WIDTH];
     fm_t layer1_output[OUT_MAX_POOL_FM_DEPTH][OUT_MAX_POOL_FM_HEIGHT][OUT_MAX_POOL_FM_WIDTH];
     fm_t linear_input[OUT_MAX_POOL_FM_DEPTH * OUT_MAX_POOL_FM_HEIGHT * OUT_MAX_POOL_FM_WIDTH];
@@ -58,15 +54,6 @@ void tiled_conv(
             std::cout << "Processing Tile " << ti * N_TILE_COLS + tj + 1;
             std::cout << "/" << N_TILE_ROWS * N_TILE_COLS << std::endl;    
 
-            //--------------------------------------------------------------------------
-            // TODO: Your code for Task B and Task C goes here 
-            //
-            // Implement the required code to run convolution on an entire tile. 
-            // Refer to utils.cpp for the required functions
-            //
-            // Hint: You need to split the filter kernels into sub-groups 
-            //       for processing.
-            //--------------------------------------------------------------------------
             load_input_tile_block_from_DRAM(conv_in_buf, input_feature_map, ti, tj);
 
             for (int i = 0; i < OUT_CONV_FM_DEPTH / OUT_BUF_DEPTH; i++) { 

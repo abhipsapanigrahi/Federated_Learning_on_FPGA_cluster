@@ -2,9 +2,8 @@
 // Course:      ECE8893 - Parallel Programming for FPGAs
 // Filename:    utils.h
 // Description: Header file for utility functions.
-//
-// You are free to modify the existing functions or add new ones.
 ///////////////////////////////////////////////////////////////////////////////
+
 #include "conv.h"
 
 //--------------------------------------------------------------------------
