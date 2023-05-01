@@ -70,5 +70,6 @@ void backprop(
 
 void calculateMSE(
     fm_t target_output[OUT_LINEAR_LENGTH],
-    fm_t output_feature_map[OUT_LINEAR_LENGTH]
+    fm_t output_feature_map[OUT_LINEAR_LENGTH],
+    fm_t mse
 );

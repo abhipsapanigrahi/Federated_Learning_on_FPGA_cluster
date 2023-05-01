@@ -21,13 +21,14 @@ fm_t pool_layer_output[OUT_MAX_POOL_FM_DEPTH][OUT_MAX_POOL_FM_HEIGHT][OUT_MAX_PO
 fm_t pool_layer_input[OUT_CONV_FM_DEPTH][OUT_CONV_FM_HEIGHT][OUT_CONV_FM_WIDTH] = {0};
 fm_t fc_input[IN_LINEAR_LENGTH] = {0};
 fm_t output_feature_map[OUT_LINEAR_LENGTH] = {0};
+fm_t mse = 0;
 
 //--------------------------------------------------------------------
 // Main function
 //--------------------------------------------------------------------
 int main ()
 {
-    long double mse = 0.0;
+    //long double mse = 0.0;
 
     // Read reference inputs, parameters, and output
     
@@ -84,7 +85,7 @@ int main ()
     std::cout << "Beginning Inference..." << std::endl;
     
     // Call kernel function here
-    tiled_conv(input_feature_map, conv_layer_weights, fc_params, output_feature_map, target_output);
+    tiled_conv(input_feature_map, conv_layer_weights, fc_params, output_feature_map, target_output, mse);
 
     for(int i=0; i<OUT_LINEAR_LENGTH; i++)
 	    cout<<typeid(output_feature_map[i]).name()<<"\t"<<output_feature_map[i]<<std::endl;

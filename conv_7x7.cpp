@@ -162,10 +162,11 @@ void backprop(
 }
 void calculateMSE(
     fm_t target_output[OUT_LINEAR_LENGTH],
-    fm_t output_feature_map[OUT_LINEAR_LENGTH]
+    fm_t output_feature_map[OUT_LINEAR_LENGTH],
+    fm_t mse
 )
 {   
-    fm_t mse = 0;
+    mse = 0;
     std::cout << "Difference between actual and predicted probabilities" << std::endl;
     for (int i = 0; i < OUT_LINEAR_LENGTH; i++)
     {

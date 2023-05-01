@@ -85,7 +85,8 @@ void tiled_conv(
     wt_t layer_weights[OUT_CONV_FM_DEPTH][IN_FM_DEPTH][KERNEL_HEIGHT][KERNEL_WIDTH],
     wt_t linear_weights[IN_LINEAR_LENGTH][OUT_LINEAR_LENGTH],
     fm_t output_feature_map[OUT_LINEAR_LENGTH],
-    fm_t target_output[OUT_LINEAR_LENGTH]
+    fm_t target_output[OUT_LINEAR_LENGTH],
+    fm_t mse
 );
 
 #endif

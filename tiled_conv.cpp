@@ -15,7 +15,8 @@ void tiled_conv(
     wt_t layer_weights[OUT_CONV_FM_DEPTH][IN_FM_DEPTH][KERNEL_HEIGHT][KERNEL_WIDTH],
     wt_t linear_weights[IN_LINEAR_LENGTH][OUT_LINEAR_LENGTH],
     fm_t output_feature_map[OUT_LINEAR_LENGTH],
-    fm_t target_output[OUT_LINEAR_LENGTH]
+    fm_t target_output[OUT_LINEAR_LENGTH],
+    fm_t mse
 )
 {
     //--------------------------------------------------------------------------
@@ -81,5 +82,5 @@ void tiled_conv(
         output_feature_map[i] = softmax_output[i];
     }
     backprop(linear_input, linear_weights, output_feature_map, target_output);
-    calculateMSE(target_output, output_feature_map);
+    calculateMSE(target_output, output_feature_map, mse);
 }
